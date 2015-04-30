@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ParkyPig</string>
     <string name="title_activity_maps">Map</string>
+    <string name="Settings">settings</string>
+    <string name="Search">search</string>
+    <string name="History">history</string>
 </resources>
