@@ -34,7 +34,7 @@ import org.json.JSONArray;
 
 public class MapsActivity extends FragmentActivity  {
 
-
+    // test
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
 
