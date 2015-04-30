@@ -1,0 +1,45 @@
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <TextView android:text="ParkyPig Beta" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/texting"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find Nearby Parking"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button	  android:id="@+id/park"
+        android:text="Park"
+        android:layout_x="150dp"
+        android:layout_y="200dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button	  android:id="@+id/pastParking"
+        android:text="History"
+        android:layout_x="150dp"
+        android:layout_y="200dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@+id/park"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />n
+
+</RelativeLayout>
