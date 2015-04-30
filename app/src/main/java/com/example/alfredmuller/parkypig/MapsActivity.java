@@ -45,7 +45,7 @@ public class MapsActivity extends FragmentActivity  {
     //this is in devel branch
     //did it work?
     //comment
-
+    //test 3
     static LatLng nearest;
     static String name;
 
