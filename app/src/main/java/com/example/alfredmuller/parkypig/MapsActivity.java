@@ -41,7 +41,10 @@ public class MapsActivity extends FragmentActivity  {
     GPSTracker gps;
 
     MyDBHandler db;
-
+    //testing 2
+    //this is in devel branch
+    //did it work?
+    //comment
 
     static LatLng nearest;
     static String name;
