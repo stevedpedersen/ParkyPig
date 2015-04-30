@@ -3,6 +3,9 @@ package com.example.alfredmuller.parkypig;
 import android.annotation.TargetApi;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,7 +35,7 @@ import java.lang.String;
 import org.json.JSONArray;
 
 
-public class MapsActivity extends FragmentActivity  {
+public class MapsActivity extends ActionBarActivity {
 
     // test
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -41,8 +44,11 @@ public class MapsActivity extends FragmentActivity  {
     GPSTracker gps;
 
     MyDBHandler db;
-
-
+    //testing 2
+    //this is in devel branch
+    //did it work?
+    //comment
+    //test 3
     static LatLng nearest;
     static String name;
 
@@ -338,7 +344,12 @@ public class MapsActivity extends FragmentActivity  {
                                      }
 
         );
-
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.maps_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

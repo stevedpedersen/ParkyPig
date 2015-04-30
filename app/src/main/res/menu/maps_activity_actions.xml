@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Create a new Group -->
+    <item android:id="@+id/action_pork_car"
+        android:icon="@drawable/ic_directions_car_48px"
+        android:title="Pork It!"
+        app:showAsAction="always"/>
+    <!-- Search, should appear as action button
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/Search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/> -->
+     <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_settings"
+        android:title="@string/Settings"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item android:id="@+id/action_parking_history"
+        android:title="@string/History"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+
+
+</menu>
