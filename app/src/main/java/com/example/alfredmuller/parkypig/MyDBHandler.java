@@ -20,8 +20,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
 
-    String LONGI = "longitude";
-    String LATI = "latitude";
+
 
     Context context;
 
