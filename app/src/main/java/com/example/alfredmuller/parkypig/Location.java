@@ -35,6 +35,16 @@ public class Location {
         this.date = date;
     }
 
+    // constructor to generate all the SQLite parameters for a new location
+    public Location(double lat, double lng,
+                    String name, String address, String date) {
+        this._lat = lat;
+        this._lng = lng;
+        this.name = name;
+        this.address = address;
+        this.date = date;
+    }
+
     public void setID(int id) {
         this._id = id;
     }
