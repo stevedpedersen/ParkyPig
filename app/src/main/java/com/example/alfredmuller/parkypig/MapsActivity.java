@@ -134,8 +134,6 @@ public class MapsActivity extends ActionBarActivity {
                     int tableRow = 1;
                     if(count >10) {
                         tableRow = count - 10;
-
-
                     }
                     for(int i=tableRow; i<count; i++) {
                         Location lo = db.getLocation(i);
