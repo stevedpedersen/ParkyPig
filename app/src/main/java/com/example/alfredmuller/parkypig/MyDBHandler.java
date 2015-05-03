@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "PastParking";
     public static final String TABLE_NAME = "coordinates";
 
@@ -40,7 +40,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 + KEY_LONGITUDE + " TEXT,"
                 + KEY_NAME + " TEXT,"
                 + KEY_ADDRESS + " TEXT,"
-                + KEY_DATE + " TEXT," + ")";
+                + KEY_DATE + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -174,9 +174,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
         cursor.close();
 
-        return cursor.getCount();
+        return cnt;
     }
 
 }

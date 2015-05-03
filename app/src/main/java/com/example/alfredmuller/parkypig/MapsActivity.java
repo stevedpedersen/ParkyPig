@@ -52,10 +52,7 @@ public class MapsActivity extends ActionBarActivity {
     //test 3
     static LatLng nearest;
     static String name;
-    LatLng nearby;
 
-    double nearbyLat;
-    double nearbyLon;
     double radius = 0.5;
     double lat;
     double lng;
@@ -133,13 +130,26 @@ public class MapsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    int count = db.getLocationsCount();
+                    int tableRow = 1;
+                    if(count >10) {
+                        tableRow = count - 10;
 
-                    Location lo = db.getLocation(1);
-                    String log = "ID:"+lo.getID()+", Lat:"+lo.getLatitude()+", Long:"+lo.getLongitude();
-                    Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
-                    //System.out.println("Lat:"+lo.getLatitude());
-                    //Location pastLocation = db.findProduct(0);
 
+                    }
+                    for(int i=tableRow; i<count; i++) {
+                        Location lo = db.getLocation(i);
+
+                        LatLng marker = new LatLng(lo.getLatitude(), lo.getLongitude());
+                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count;
+                        Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
+                        //System.out.println("Lat:"+lo.getLatitude());
+                        //Location pastLocation = db.findProduct(0);
+                        mMap.addMarker(new MarkerOptions()
+                                .position(marker)
+                                .title("Past Parked: ")
+                                .snippet("" + marker));
+                    }
                     //textView.setText("hey!");
                 } catch (Exception e) {
                     // do stuff
