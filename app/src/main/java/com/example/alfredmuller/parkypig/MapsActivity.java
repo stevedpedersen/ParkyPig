@@ -28,8 +28,11 @@ import org.json.JSONObject;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.lang.String;
+import java.util.Date;
 
 
 import org.json.JSONArray;
@@ -104,8 +107,12 @@ public class MapsActivity extends ActionBarActivity {
         park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyy HH:mm:ss");
+                String s = formatter.format(date);
                 try {
-                    db.addLocation(new Location(lat, lng));
+                    db.addLocation(new Location(lat, lng, s));
+
 
                     //aLocation = new Location();
                     //aLocation.setLatitude(lat);
@@ -113,7 +120,7 @@ public class MapsActivity extends ActionBarActivity {
 
                     //db.add(lat, lng);
                     //db.addLocation(aLocation);
-                    Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Location Saved" + s, Toast.LENGTH_LONG).show();
                     System.out.println("Here in Park");
                 } catch (Exception e) {
                     // do stuff
@@ -139,14 +146,15 @@ public class MapsActivity extends ActionBarActivity {
                         Location lo = db.getLocation(i);
 
                         LatLng marker = new LatLng(lo.getLatitude(), lo.getLongitude());
-                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count;
+                        String s = lo.getDate();
+                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count + "Date" + lo.getDate();
                         Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
                         //System.out.println("Lat:"+lo.getLatitude());
                         //Location pastLocation = db.findProduct(0);
                         mMap.addMarker(new MarkerOptions()
                                 .position(marker)
-                                .title("Past Parked: ")
-                                .snippet("" + marker));
+                                .title("Last Parked: ")
+                                .snippet("" + s));
                     }
                     //textView.setText("hey!");
                 } catch (Exception e) {
