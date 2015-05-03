@@ -41,6 +41,7 @@ public class MapsActivity extends ActionBarActivity {
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
 
+
     GPSTracker gps;
 
     MyDBHandler db;
