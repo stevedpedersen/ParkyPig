@@ -38,7 +38,7 @@ import org.json.JSONArray;
 public class MapsActivity extends ActionBarActivity {
 
     // test
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
 
     GPSTracker gps;
@@ -51,7 +51,10 @@ public class MapsActivity extends ActionBarActivity {
     //test 3
     static LatLng nearest;
     static String name;
+    LatLng nearby;
 
+    double nearbyLat;
+    double nearbyLon;
     double radius = 0.5;
     double lat;
     double lng;
@@ -93,6 +96,10 @@ public class MapsActivity extends ActionBarActivity {
                 httpManager httpManager = new httpManager();
                 httpManager.execute(url);
                 httpManager.onPostExecute(url);
+
+
+                /**mMap.addMarker(new MarkerOptions()
+                        .position(nearest));**/
             }
         });
 
@@ -191,6 +198,17 @@ public class MapsActivity extends ActionBarActivity {
         }
     }
 
+    public static void addNearbyMarker(LatLng nearby, String name){
+
+            mMap.addMarker(new MarkerOptions()
+            .position(nearby)
+            .title("Nearest Parking Garage: ")
+            .snippet(name + "\n" + nearby));
+
+
+
+    }
+
     @TargetApi(14)
     public static void finallyShow(String response){
         JSONObject rootObject;
@@ -212,10 +230,11 @@ public class MapsActivity extends ActionBarActivity {
                 name = list.get(0);
                 String loc = location.getJSONObject(5).getString("LOC");
                 String[] coords = loc.split("\\,");
-                nearest = new LatLng(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]));
+                nearest = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
 
+                addNearbyMarker(nearest, name);
 
-                textView.setText(message + "\n"+ desc + "\n" + name);
+                textView.setText(message + "\n"+ desc + "\n" + name + "\n" + nearest);
 
             }
             else{
