@@ -27,7 +27,8 @@
 
         <activity
             android:name="com.example.alfredmuller.parkypig.MapsActivity"
-            android:label="ParkyPig" >
+            android:label="ParkyPig"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

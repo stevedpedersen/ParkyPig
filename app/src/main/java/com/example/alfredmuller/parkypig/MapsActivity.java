@@ -75,7 +75,6 @@ public class MapsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         gps = new GPSTracker(MapsActivity.this);
         lat = gps.getLatitude();
         lng = gps.getLongitude();
