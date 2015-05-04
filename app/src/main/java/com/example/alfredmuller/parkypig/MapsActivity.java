@@ -236,6 +236,7 @@ public class MapsActivity extends ActionBarActivity {
                 JSONArray location = new JSONArray(rootObject.getString("AVL"));
                 String message = rootObject.getString("MESSAGE");
                 String desc = rootObject.getString("AVAILABILITY_UPDATED_TIMESTAMP");
+
                 List<String> list = new ArrayList<>();
 
 
@@ -244,7 +245,7 @@ public class MapsActivity extends ActionBarActivity {
                 }
 
                 // adds a marker to the nearest available parking location
-                name = list.get(0);
+                name = list.get(5);
                 String loc = location.getJSONObject(5).getString("LOC");
                 String[] coords = loc.split("\\,");
                 nearest = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));

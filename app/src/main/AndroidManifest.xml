@@ -27,7 +27,7 @@
 
         <activity
             android:name="com.example.alfredmuller.parkypig.MapsActivity"
-            android:label="Map" >
+            android:label="ParkyPig" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
