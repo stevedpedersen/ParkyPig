@@ -7,27 +7,39 @@ package com.example.alfredmuller.parkypig;
         import android.os.Bundle;
         import android.os.Handler;
 
+/**
+ * SplashScreen is a class that creates an activity window that displays our splash screen on startup.
+ * The duration of the screen is set at 6 seconds on a timer.
+ * @author Alf Muller
+ */
 public class SplashScreen extends Activity {
 
-    // Splash screen timer
+    /**
+     * Default constructor for SplashScreen. Not used.
+     */
+    public SplashScreen(){}
+
+
+    // Splash screen timer constant
     private static int SPLASH_TIME_OUT = 6000;
 
+    /**
+     * onCreate is the first method called when the app starts.
+     * @param savedInstanceState
+     * @return void
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        // Showing splash screen with a timer.
         new Handler().postDelayed(new Runnable() {
-
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
 
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                // Start your app main activity
+                // Starts the main activity, MapsActivity class
                 Intent i = new Intent(SplashScreen.this, MapsActivity.class);
                 startActivity(i);
 

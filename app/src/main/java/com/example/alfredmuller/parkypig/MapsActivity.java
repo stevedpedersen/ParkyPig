@@ -36,29 +36,37 @@ import java.util.Date;
 
 import org.json.JSONArray;
 
-
+/**
+ * <h1>MapsActivity is the main class which displays the Google Maps window for the ParkyPig App.</h1>
+ * <p>The class contains various methods used to display the map, custom icons, event listeners, and buttons.
+ * Additional methods make calls various java files that assist in the reading and writing to database. The project
+ * displays the current gps location on the map. The marker can be manipulated using long clicks or
+ * drags. Clicking the Find Nearby Parking button displays a nearby parking garage. Clicking the Park
+ * button stores the current marker location in the SQLite database and pressing the history button
+ * displays the last 10 parked locations.</p> <b>Authors are defined as anyone who wrote code for the class.</b>
+ *
+ * @author Alfred Muller
+ * @author Steve Pedersen
+ * @author Syed Khureshi
+ * @author Vince DiCarlo
+ * @author Bryan Chen
+ * @version Milestone3
+ *
+ */
 public class MapsActivity extends ActionBarActivity {
 
-    // test
+
     private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-
-
     GPSTracker gps;
-
     MyDBHandler db;
-    //testing 2
-    //this is in devel branch
-    //did it work?
-    //comment
-    //test 3
-    static LatLng nearest;
-    static String name;
 
     private double radius = 0.5;
     double lat;
     double lng;
 
+    static LatLng nearest;
+    static String name;
     String url;
     String url1 = "radius=";
     String url2 = "&response=json&pricing=yes&version=1.0";
@@ -68,7 +76,11 @@ public class MapsActivity extends ActionBarActivity {
     Button findNearbyParking, park, history;
 
 
-
+    /**
+     * onCreate is the first method called when the app is launched.
+     * @param savedInstanceState the instance of the app
+     * @return void
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +99,6 @@ public class MapsActivity extends ActionBarActivity {
         history = (Button) findViewById(R.id.pastParking);
 
 
-
         findNearbyParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,10 +106,6 @@ public class MapsActivity extends ActionBarActivity {
                 httpManager httpManager = new httpManager();
                 httpManager.execute(url);
                 httpManager.onPostExecute(url);
-
-
-                /**mMap.addMarker(new MarkerOptions()
-                        .position(nearest));**/
             }
         });
 
@@ -110,21 +117,15 @@ public class MapsActivity extends ActionBarActivity {
                 String s = formatter.format(date);
                 try {
                     db.addLocation(new Location(lat, lng, s));
-
-
-                    //aLocation = new Location();
-                    //aLocation.setLatitude(lat);
-                    //aLocation.setLatitude(lng);
-
-                    //db.add(lat, lng);
-                    //db.addLocation(aLocation);
-                    Toast.makeText(getApplicationContext(), "Location Saved" + s, Toast.LENGTH_LONG).show();
-                    System.out.println("Here in Park");
+                    Toast.makeText(getApplicationContext(), "Location Saved As Parking Spot On: " + s, Toast.LENGTH_LONG).show();
+                    //System.out.println("Here in Park");//Debugging purposes
                 } catch (Exception e) {
-                    // do stuff
+                    //do we want something here?
                 }
-                //Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_LONG).show();
-                //System.out.println("Location saved");
+                /*Debugging purposes:
+                Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_LONG).show();
+                System.out.println("Location saved");
+                */
             }
         });
 
@@ -147,17 +148,16 @@ public class MapsActivity extends ActionBarActivity {
                         String s = lo.getDate();
                         String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count + "Date" + lo.getDate();
                         Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
-                        //System.out.println("Lat:"+lo.getLatitude());
-                        //Location pastLocation = db.findProduct(0);
+
                         mMap.addMarker(new MarkerOptions()
                                 .position(marker)
                                 .title("Last Parked: ")
                                 .snippet("" + s)
                         .icon(BitmapDescriptorFactory.defaultMarker(330)));
                     }
-                    //textView.setText("hey!");
+
                 } catch (Exception e) {
-                    // do stuff
+                    // do we want something here?
                 }
 
             }
@@ -168,10 +168,11 @@ public class MapsActivity extends ActionBarActivity {
 
     }
 
-
+    /**
+     * createURL fashions a string based on the latitude and longitude of the user to submit to the SFPark API.
+     * @return void
+     */
     public void createURL() {
-        //lat=37.792275;
-        //lng=-122.397089;
 
         url = "http://api.sfpark.org/sfpark/rest/availabilityservice?";
         url = url + "lat=" + lat +"&long=" + lng + "&" + url1 + getRadius() + url2;
@@ -180,6 +181,11 @@ public class MapsActivity extends ActionBarActivity {
         //http://api.sfpark.org/sfpark/rest/availabilityservice?radius=.05&response=json&pricing=yes&version=1.0
     }
 
+    /**
+     * onResume is part of the Android activity flow. If the activity is paused, onResume recreates the map
+     * if needed.
+     * @return void
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -214,8 +220,15 @@ public class MapsActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Creates a new marker on the map when {@link #findNearbyParking} is clicked displaying a nearby
+     * parking location.
+     * @param nearby
+     * @param name
+     * @return void
+     */
     public static void addNearbyMarker(LatLng nearby, String name){
-
+            //Create the marker with passed parameters.
             mMap.addMarker(new MarkerOptions()
             .position(nearby)
             .title("Nearest Parking Garage: ")
