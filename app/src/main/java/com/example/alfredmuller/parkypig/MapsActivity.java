@@ -28,8 +28,11 @@ import org.json.JSONObject;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.lang.String;
+import java.util.Date;
 
 
 import org.json.JSONArray;
@@ -38,7 +41,8 @@ import org.json.JSONArray;
 public class MapsActivity extends ActionBarActivity {
 
     // test
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
 
 
     GPSTracker gps;
@@ -71,7 +75,6 @@ public class MapsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         gps = new GPSTracker(MapsActivity.this);
         lat = gps.getLatitude();
         lng = gps.getLongitude();
@@ -93,14 +96,22 @@ public class MapsActivity extends ActionBarActivity {
                 httpManager httpManager = new httpManager();
                 httpManager.execute(url);
                 httpManager.onPostExecute(url);
+
+
+                /**mMap.addMarker(new MarkerOptions()
+                        .position(nearest));**/
             }
         });
 
         park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyy HH:mm:ss");
+                String s = formatter.format(date);
                 try {
-                    db.addLocation(new Location(lat, lng));
+                    db.addLocation(new Location(lat, lng, s));
+
 
                     //aLocation = new Location();
                     //aLocation.setLatitude(lat);
@@ -108,7 +119,7 @@ public class MapsActivity extends ActionBarActivity {
 
                     //db.add(lat, lng);
                     //db.addLocation(aLocation);
-                    Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Location Saved" + s, Toast.LENGTH_LONG).show();
                     System.out.println("Here in Park");
                 } catch (Exception e) {
                     // do stuff
@@ -125,13 +136,26 @@ public class MapsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    int count = db.getLocationsCount();
+                    int tableRow = 1;
+                    if(count >10) {
+                        tableRow = count - 10;
+                    }
+                    for(int i=tableRow; i<count; i++) {
+                        Location lo = db.getLocation(i);
 
-                    Location lo = db.getLocation(1);
-                    String log = "ID:"+lo.getID()+", Lat:"+lo.getLatitude()+", Long:"+lo.getLongitude();
-                    Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
-                    //System.out.println("Lat:"+lo.getLatitude());
-                    //Location pastLocation = db.findProduct(0);
-
+                        LatLng marker = new LatLng(lo.getLatitude(), lo.getLongitude());
+                        String s = lo.getDate();
+                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count + "Date" + lo.getDate();
+                        Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
+                        //System.out.println("Lat:"+lo.getLatitude());
+                        //Location pastLocation = db.findProduct(0);
+                        mMap.addMarker(new MarkerOptions()
+                                .position(marker)
+                                .title("Last Parked: ")
+                                .snippet("" + s)
+                        .icon(BitmapDescriptorFactory.defaultMarker(330)));
+                    }
                     //textView.setText("hey!");
                 } catch (Exception e) {
                     // do stuff
@@ -191,6 +215,17 @@ public class MapsActivity extends ActionBarActivity {
         }
     }
 
+    public static void addNearbyMarker(LatLng nearby, String name){
+
+            mMap.addMarker(new MarkerOptions()
+            .position(nearby)
+            .title("Nearest Parking Garage: ")
+            .snippet(name + "\n" + nearby));
+
+
+
+    }
+
     @TargetApi(14)
     public static void finallyShow(String response){
         JSONObject rootObject;
@@ -201,21 +236,22 @@ public class MapsActivity extends ActionBarActivity {
                 JSONArray location = new JSONArray(rootObject.getString("AVL"));
                 String message = rootObject.getString("MESSAGE");
                 String desc = rootObject.getString("AVAILABILITY_UPDATED_TIMESTAMP");
-                List<String> list = new ArrayList<>();
 
+                List<String> list = new ArrayList<>();
 
                 for (int i = 0; i < location.length(); i++) {
                     list.add(location.getJSONObject(i).getString("NAME"));
                 }
 
                 // adds a marker to the nearest available parking location
-                name = list.get(0);
+                name = list.get(5);
                 String loc = location.getJSONObject(5).getString("LOC");
                 String[] coords = loc.split("\\,");
-                nearest = new LatLng(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]));
+                nearest = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
 
+                addNearbyMarker(nearest, name);
 
-                textView.setText(message + "\n"+ desc + "\n" + name);
+                textView.setText(message + "\n"+ desc + "\n" + name + "\n" + nearest);
 
             }
             else{
