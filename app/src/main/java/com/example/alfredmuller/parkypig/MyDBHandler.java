@@ -26,12 +26,26 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     Context context;
 
+
+    /**
+     * Single arg constructor which opens up a database named DATABASE_NAME, if one exists.
+     *
+     * @param context saves the context of the database
+     */
     public MyDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created. Creates a string formatted to execute
+     * a SQL command for CREATE TABLE. Creates a table if one does not exist already.
+     * <p>
+     * ID will autoincrement for each newly added row to the table. All other entries
+     * are to be inputted as strings (TEXT).
+     *
+     * @param db a reference to the database created/called from constructor
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_NAME + "("
@@ -44,7 +58,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
-
+    /**
+     * Used to upgrade a database from an existing one.
+     *
+     * @param db         reference to the database to be upgraded
+     * @param oldVersion the preexisting version
+     * @param newVersion the new version number
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(MyDBHandler.class.getName(),
@@ -54,6 +74,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Enables the database to be writable and then adds a new row to the table
+     * using the values from the location object.
+     *
+     * @param location contains the information for the database row.
+     */
     void addLocation(Location location) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -68,6 +94,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Creates an ArrayList of Location objects by querying each row's column
+     * from the TABLE_NAME table. This method will retrieve all entries in
+     * the database.
+     *
+     * @return an ArrayList of Location objects for all entries in the table
+     */
     public List<Location> getAllLocations() {
         List<Location> locationList = new ArrayList<>();
         // Select All Query
@@ -95,6 +128,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return locationList;
     }
 
+    /**
+     * Returns the table entry of the associated ID as a Location object
+     *
+     * @param id    the KEY_ID of the table entry to be queried
+     * @return      the Location object associated with id
+     */
     Location getLocation(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -118,43 +157,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return location;
     }
 
-    // not completely implemented yet, not sure if needed though
-    public Location findProduct(int ID) {
-        String query = "Select * FROM " + TABLE_NAME + " WHERE " + KEY_ID + " =  \"" + ID + "\"";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        Location location = new Location();
-
-        if (cursor.moveToFirst()) {
-            System.out.println("made it");
-            cursor.moveToFirst();
-            location.setID(Integer.parseInt(cursor.getString(0)));
-            location.setLatitude(Double.parseDouble(cursor.getString(1)));
-            location.setLongitude(Double.parseDouble(cursor.getString(2)));
-            cursor.close();
-        } else {
-            System.out.println("Bummer");
-            location = null;
-        }
-        db.close();
-        return location;
-    }
-
-    // not fully implemented, probably needs to be though
-    // deletes entry from table based on its ID
+    /**
+     * Returns true or false based on success of deleting a row from the table.
+     *
+     * @param productId String representation of the row ID.
+     * @return          true for success, false for fail
+     */
     public boolean deleteProduct(String productId) {
-
+        SQLiteDatabase db = this.getWritableDatabase();
         boolean result = false;
 
         String query = "Select * FROM " + TABLE_NAME + " WHERE " + KEY_ID + " =  \"" + productId + "\"";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-
         Cursor cursor = db.rawQuery(query, null);
-
         Location location = new Location();
 
         if (cursor.moveToFirst()) {
@@ -168,15 +183,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    // may be useful to know how many entries are in the database, especially when it comes time
-    // to populate the map with markers
+    /**
+     * Returns the number of entries (rows) in the TABLE_NAME table.
+     *
+     * @return number of entries (rows) in the table.
+     */
     public int getLocationsCount() {
         String countQuery = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int cnt = cursor.getCount();
         cursor.close();
-
         return cnt;
     }
 
