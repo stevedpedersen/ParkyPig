@@ -1,7 +1,6 @@
 package com.example.alfredmuller.parkypig;
 
 import android.annotation.TargetApi;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -56,7 +55,7 @@ public class MapsActivity extends ActionBarActivity {
     static LatLng nearest;
     static String name;
 
-    double radius = 0.5;
+    private double radius = 0.5;
     double lat;
     double lng;
 
@@ -175,7 +174,7 @@ public class MapsActivity extends ActionBarActivity {
         //lng=-122.397089;
 
         url = "http://api.sfpark.org/sfpark/rest/availabilityservice?";
-        url = url + "lat=" + lat +"&long=" + lng + "&" + url1 + radius + url2;
+        url = url + "lat=" + lat +"&long=" + lng + "&" + url1 + getRadius() + url2;
 
         //http://api.sfpark.org/sfpark/rest/availabilityservice?lat=37.792275&long=-122.397089&radius=0.25&uom=mile&response=json
         //http://api.sfpark.org/sfpark/rest/availabilityservice?radius=.05&response=json&pricing=yes&version=1.0
@@ -387,5 +386,13 @@ public class MapsActivity extends ActionBarActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.maps_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 }
