@@ -153,7 +153,8 @@ public class MapsActivity extends ActionBarActivity {
                         mMap.addMarker(new MarkerOptions()
                                 .position(marker)
                                 .title("Last Parked: ")
-                                .snippet("" + s));
+                                .snippet("" + s)
+                        .icon(BitmapDescriptorFactory.defaultMarker(330)));
                     }
                     //textView.setText("hey!");
                 } catch (Exception e) {
