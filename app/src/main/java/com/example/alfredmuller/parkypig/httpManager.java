@@ -71,6 +71,5 @@ public class httpManager extends AsyncTask<String, Integer, String>{
         super.onPostExecute(s);
         //MainActivity mainActivity = new MainActivity();
         MapsActivity.dropMarkers(response);
-        //MapsActivity.finallyShow(response);
     }
 }

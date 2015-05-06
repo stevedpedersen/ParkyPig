@@ -240,46 +240,6 @@ public class MapsActivity extends ActionBarActivity {
 
 
     @TargetApi(14)
-    public static void finallyShow(String response){
-        JSONObject rootObject;
-
-        try {
-            if(response !=null){
-                rootObject = new JSONObject(response);
-                JSONArray location = new JSONArray(rootObject.getString("AVL"));
-                String message = rootObject.getString("MESSAGE");
-                String desc = rootObject.getString("AVAILABILITY_UPDATED_TIMESTAMP");
-
-                List<String> list = new ArrayList<>();
-
-                for (int i = 0; i < location.length(); i++) {
-                    list.add(location.getJSONObject(i).getString("NAME"));
-                }
-
-                // adds a marker to the nearest available parking location
-                name = list.get(5);
-                String loc = location.getJSONObject(5).getString("LOC");
-                String[] coords = loc.split("\\,");
-                nearest = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
-
-                addNearbyMarker(nearest, name);
-
-                textView.setText(message + "\n"+ desc + "\n" + name + "\n" + nearest);
-
-            }
-            else{
-                textView.setText("response is null");
-            }
-
-
-        } catch (JSONException e) {
-            textView.setText("No porking found, oink");
-            e.printStackTrace();
-        }
-
-    }
-
-    @TargetApi(14)
     public static void dropMarkers(String response){
         JSONObject rootObject;
 
@@ -293,7 +253,7 @@ public class MapsActivity extends ActionBarActivity {
                 // http://api.sfpark.org/sfpark/rest/availabilityservice?lat=37.792275&long=-122.397089&radius=0.25&uom=mile&response=json
 
                 // Create Location objects from parsed JSON info and add to avlParking
-                for (int i = 0; i < avl.length(); i++) {
+                for (int i = 0; i < 10; i++) {
                     Location aLocation = new Location();
                     String temp = avl.getJSONObject(i).getString("LOC");
                     String[] coords = temp.split("\\,");
@@ -304,14 +264,19 @@ public class MapsActivity extends ActionBarActivity {
                     //System.out.println("long: " + aLocation.getLongitude());
                     aLocation.setName(avl.getJSONObject(i).getString("NAME"));
                     //System.out.println(aLocation.getName());
-                    aLocation.setAddress(avl.getJSONObject(i).getString("DESC"));
-                    //System.out.println(aLocation.getAddress());
 
+                    try {
+                        aLocation.setAddress(avl.getJSONObject(i).getString("DESC"));
+                    } catch (Exception e) {
+                        aLocation.setAddress("");
+                    }
+                    //System.out.println(aLocation.getAddress() + "\n");
                     avlParking.add(aLocation);
                 }
 
+
                 // drop 10 markers
-               for (int i = avlParking.size(); i >= avlParking.size() - 10; i--) {
+                for (int i = 9; i >= 0; i--) {
                     LatLng coords = new LatLng(avlParking.get(i).getLatitude(),
                                                 avlParking.get(i).getLongitude());
                     String garageName = avlParking.get(i).getName();
@@ -331,7 +296,7 @@ public class MapsActivity extends ActionBarActivity {
 
 
         } catch (JSONException e) {
-            textView.setText("");
+            textView.setText("hmm");
             //e.printStackTrace();
         }
 
