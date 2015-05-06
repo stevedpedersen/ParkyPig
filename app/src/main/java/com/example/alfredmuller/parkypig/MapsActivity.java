@@ -1,40 +1,34 @@
 package com.example.alfredmuller.parkypig;
 
 import android.annotation.TargetApi;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Marker;
-
-import static com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-
-import android.view.View;
-import android.widget.Button;
-
-
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.lang.String;
-import java.util.Date;
-
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 
 /**
  * <h1>MapsActivity is the main class which displays the Google Maps window for the ParkyPig App.</h1>
@@ -115,6 +109,9 @@ public class MapsActivity extends ActionBarActivity {
                 Date date = new Date();
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyy HH:mm:ss");
                 String s = formatter.format(date);
+                MediaPlayer mp = MediaPlayer.create(MapsActivity.this, R.raw.snort);
+                mp.start();
+
                 try {
                     db.addLocation(new Location(lat, lng, s));
                     Toast.makeText(getApplicationContext(), "Location Saved As Parking Spot On: " + s, Toast.LENGTH_LONG).show();
@@ -146,8 +143,8 @@ public class MapsActivity extends ActionBarActivity {
 
                         LatLng marker = new LatLng(lo.getLatitude(), lo.getLongitude());
                         String s = lo.getDate();
-                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude() + "length: " + count + "Date" + lo.getDate();
-                        Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
+                        String log = "ID:" + lo.getID() + ", Lat:" + lo.getLatitude() + ", Long:" + lo.getLongitude()  + "Date" + lo.getDate();
+                        //Toast.makeText(getApplicationContext(), log, Toast.LENGTH_LONG).show();
 
                         mMap.addMarker(new MarkerOptions()
                                 .position(marker)
@@ -253,7 +250,7 @@ public class MapsActivity extends ActionBarActivity {
                 // http://api.sfpark.org/sfpark/rest/availabilityservice?lat=37.792275&long=-122.397089&radius=0.25&uom=mile&response=json
 
                 // Create Location objects from parsed JSON info and add to avlParking
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 5; i++) {
                     Location aLocation = new Location();
                     String temp = avl.getJSONObject(i).getString("LOC");
                     String[] coords = temp.split("\\,");
@@ -268,7 +265,7 @@ public class MapsActivity extends ActionBarActivity {
                     try {
                         aLocation.setAddress(avl.getJSONObject(i).getString("DESC"));
                     } catch (Exception e) {
-                        aLocation.setAddress("");
+                        aLocation.setAddress("Metered Parking");
                     }
                     //System.out.println(aLocation.getAddress() + "\n");
                     avlParking.add(aLocation);
@@ -276,7 +273,7 @@ public class MapsActivity extends ActionBarActivity {
 
 
                 // drop 10 markers
-                for (int i = 9; i >= 0; i--) {
+                for (int i = 4; i >= 0; i--) {
                     LatLng coords = new LatLng(avlParking.get(i).getLatitude(),
                                                 avlParking.get(i).getLongitude());
                     String garageName = avlParking.get(i).getName();
