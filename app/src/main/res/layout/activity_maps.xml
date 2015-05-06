@@ -15,7 +15,6 @@
     <TextView android:text="ParkyPig Beta - Milestone 3" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/texting"/>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
