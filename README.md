@@ -1,4 +1,4 @@
-# ParkyPigV1
+# ParkyPig2
 
 ***You no longer need to add pig.png and pigsplasher.png***
 
