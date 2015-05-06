@@ -17,59 +17,65 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by omer on 4/14/2015.
+ * <h1>httpManager is a helper class which extends AsyncTask class. This class communicates with the SFPark API.</h1>
+ * <p>The class contains various methods used to send location coordinates of the current marker and retrieve the nearby parking
+ * spots. An instance of this class is invoked by calling the httpManager.execute() function when the "Find Nearby Parking"
+ * button is clicked on the UI screen.</p><b>Authors are defined as anyone who wrote code for the class.</b>
+ *
+ * @author Syed Khureshi
+ * @version Milestone3
+ * @see android.os.AsyncTask
  */
 public class httpManager extends AsyncTask<String, Integer, String>{
 
-    public static String response = "crazy";
-    public static String responseU = "def val";
+    public static String response;
 
+    /**
+     *doInBackground creates and opens HttpURLConnection to send the current marker coordinates and receive
+     * the nearby parking information.
+     *
+     * @param uri used to send to the SFPark API
+     * @return response String of SFPark API call.
+     */
     @Override
     protected String doInBackground(String... uri) {
 
-        BufferedReader reader = null;
+        BufferedReader bufferedReader = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
         try {
             URL url = new URL(uri[0]);
-
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-            StringBuilder sb = new StringBuilder();
-
-            String line = null;
-
-            while ((line = reader.readLine()) != null){
-                sb.append(line + "\n");
+            while ((line = bufferedReader.readLine()) != null){
+                stringBuilder.append(line + "\n");
             }
-
-            response = sb.toString();
-
-            return null;
-
-
+            response = stringBuilder.toString();
         }catch (Exception e){
             e.printStackTrace();
-            response = "Null 1";
-            return null;
+            return response;
         }finally {
-            if(reader != null){
+            if(bufferedReader != null){
                 try {
-                    reader.close();
+                    bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-
-                    response = "this is null";
-                    return null;
                 }
             }
         }
-
+        return response;
     }
 
+    /**
+     * onPostExecute method is executed on completion of doInBackground method.
+     * This method receives the response of SFPark API call as a parameter, result and
+     * passes it to the MapsActivity.dropMarkers method.
+     * @param result, response from SFPark API.
+     */
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        //MainActivity mainActivity = new MainActivity();
-        MapsActivity.dropMarkers(response);
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        MapsActivity.dropMarkers(result);
     }
 }
