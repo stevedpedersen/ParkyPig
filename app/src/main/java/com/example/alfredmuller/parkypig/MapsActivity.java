@@ -238,32 +238,56 @@ public class MapsActivity extends ActionBarActivity {
 
     }
 
+
     @TargetApi(14)
-    public static void finallyShow(String response){
+    public static void dropMarkers(String response){
         JSONObject rootObject;
 
         try {
             if(response !=null){
                 rootObject = new JSONObject(response);
-                JSONArray location = new JSONArray(rootObject.getString("AVL"));
-                String message = rootObject.getString("MESSAGE");
-                String desc = rootObject.getString("AVAILABILITY_UPDATED_TIMESTAMP");
+                JSONArray avl = new JSONArray(rootObject.getString("AVL"));
 
-                List<String> list = new ArrayList<>();
+                List<Location> avlParking = new ArrayList<>();
 
-                for (int i = 0; i < location.length(); i++) {
-                    list.add(location.getJSONObject(i).getString("NAME"));
+                // http://api.sfpark.org/sfpark/rest/availabilityservice?lat=37.792275&long=-122.397089&radius=0.25&uom=mile&response=json
+
+                // Create Location objects from parsed JSON info and add to avlParking
+                for (int i = 0; i < 10; i++) {
+                    Location aLocation = new Location();
+                    String temp = avl.getJSONObject(i).getString("LOC");
+                    String[] coords = temp.split("\\,");
+
+                    aLocation.setLatitude(Double.parseDouble(coords[1]));
+                    //System.out.println("lat: " + aLocation.getLatitude());
+                    aLocation.setLongitude(Double.parseDouble(coords[0]));
+                    //System.out.println("long: " + aLocation.getLongitude());
+                    aLocation.setName(avl.getJSONObject(i).getString("NAME"));
+                    //System.out.println(aLocation.getName());
+
+                    try {
+                        aLocation.setAddress(avl.getJSONObject(i).getString("DESC"));
+                    } catch (Exception e) {
+                        aLocation.setAddress("");
+                    }
+                    //System.out.println(aLocation.getAddress() + "\n");
+                    avlParking.add(aLocation);
                 }
 
-                // adds a marker to the nearest available parking location
-                name = list.get(5);
-                String loc = location.getJSONObject(5).getString("LOC");
-                String[] coords = loc.split("\\,");
-                nearest = new LatLng(Double.parseDouble(coords[1]), Double.parseDouble(coords[2]));
 
-                addNearbyMarker(nearest, name);
+                // drop 10 markers
+                for (int i = 9; i >= 0; i--) {
+                    LatLng coords = new LatLng(avlParking.get(i).getLatitude(),
+                                                avlParking.get(i).getLongitude());
+                    String garageName = avlParking.get(i).getName();
+                    String address = avlParking.get(i).getAddress();
 
-                textView.setText(message + "\n"+ desc + "\n" + name + "\n" + nearest);
+                    mMap.addMarker(new MarkerOptions()
+                        .position(coords)
+                        .title(garageName)
+                        .snippet(address));
+                }
+
 
             }
             else{
@@ -272,47 +296,8 @@ public class MapsActivity extends ActionBarActivity {
 
 
         } catch (JSONException e) {
-            textView.setText("No porking found, oink");
-            e.printStackTrace();
-        }
-
-    }
-
-    @TargetApi(14)
-    public static void finallyShowDB(String response){
-        JSONObject rootObject;
-
-        try {
-            if(response !=null){
-                rootObject = new JSONObject(response);
-                JSONArray location = new JSONArray(rootObject.getString("AVL"));
-                String message = rootObject.getString("MESSAGE");
-                String desc = rootObject.getString("AVAILABILITY_UPDATED_TIMESTAMP");
-                List<String> list = new ArrayList<>();
-
-
-                for (int i = 0; i < location.length(); i++) {
-                    list.add(location.getJSONObject(i).getString("NAME"));
-                }
-
-                // adds a marker to the nearest available parking location
-                name = list.get(0);
-                String loc = location.getJSONObject(5).getString("LOC");
-                String[] coords = loc.split("\\,");
-                nearest = new LatLng(Double.parseDouble(coords[0]), Double.parseDouble(coords[1]));
-
-
-                textView.setText(message + "\n"+ desc + "\n" + name);
-
-            }
-            else{
-                textView.setText("response is null");
-            }
-
-
-        } catch (JSONException e) {
-            textView.setText("No porking found, oink");
-            e.printStackTrace();
+            textView.setText("hmm");
+            //e.printStackTrace();
         }
 
     }
