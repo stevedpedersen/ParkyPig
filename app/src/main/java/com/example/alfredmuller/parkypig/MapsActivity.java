@@ -102,9 +102,9 @@ public class MapsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 createURL();
-                httpManager httpManager = new httpManager();
-                httpManager.execute(url);
-                httpManager.onPostExecute(url);
+                HttpManager HttpManager = new HttpManager();
+                HttpManager.execute(url);
+                HttpManager.onPostExecute(url);
             }
         });
 

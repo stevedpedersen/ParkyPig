@@ -1,19 +1,12 @@
 package com.example.alfredmuller.parkypig;
 
 
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.HandlerThread;
-import android.util.Log;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,7 +19,7 @@ import java.net.URL;
  * @version Milestone3
  * @see android.os.AsyncTask
  */
-public class httpManager extends AsyncTask<String, Integer, String>{
+public class HttpManager extends AsyncTask<String, Integer, String>{
 
     public static String response;
 
