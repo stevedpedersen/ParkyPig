@@ -24,6 +24,11 @@ public class HttpManager extends AsyncTask<String, Integer, String>{
     public static String response;
 
     /**
+     * Default constructor for HttpManager, not used.
+     */
+    public HttpManager(){}
+
+    /**
      *doInBackground creates and opens HttpURLConnection to send the current marker coordinates and receive
      * the nearby parking information.
      *
