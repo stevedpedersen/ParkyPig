@@ -16,6 +16,7 @@ import java.util.List;
  * is part of the Android API.
  */
 public class MyDBHandler extends SQLiteOpenHelper {
+
     /**
      * The most current version of the database.
      */
