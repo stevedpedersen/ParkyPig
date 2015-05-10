@@ -236,11 +236,14 @@ public class MapsActivity extends ActionBarActivity {
 
     /**
      * Creates a new marker on the map when {@link #findNearbyParking} is clicked displaying a nearby
-     * parking location.
+     * parking location (deprecated, Leaving it in to show deprecation).
      * @param nearby A LatLng object comprised of the marker latitude and longitude. Get from SFPark
      * @param name A String object that gives the name of the garage or street, from SFPark API.
      * @return void
+     * @deprecated dropMarkers below takes care of what this, method used to do. Leaving it in to show
+     * deprecation.
      */
+    @Deprecated
     public static void addNearbyMarker(LatLng nearby, String name){
             //Create the marker with passed parameters.
             mMap.addMarker(new MarkerOptions()
