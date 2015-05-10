@@ -3,9 +3,9 @@ package com.example.alfredmuller.parkypig;
 
 
         import android.app.Activity;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.os.Handler;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 
 /**
  * SplashScreen is a class that creates an activity window that displays our splash screen on startup.
@@ -32,6 +32,7 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
         // Showing splash screen with a timer.
         new Handler().postDelayed(new Runnable() {

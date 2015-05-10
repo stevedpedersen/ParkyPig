@@ -44,6 +44,7 @@ import static com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
  * @author Syed Khureshi
  * @author Vince DiCarlo
  * @author Bryan Chen
+ * @author Susanne Wu
  * @version Milestone3
  *
  */
@@ -54,6 +55,8 @@ public class MapsActivity extends ActionBarActivity {
 
     GPSTracker gps;
     MyDBHandler db;
+    MediaPlayer mp1, mp2;
+
 
     private double radius = 0.5;
     double lat;
@@ -71,7 +74,7 @@ public class MapsActivity extends ActionBarActivity {
 
 
     /**
-     * onCreate is the first method called when the app is launched.
+     * Launches the app, the first method called upon startup.
      * @param savedInstanceState the instance of the app
      * @return void
      */
@@ -91,7 +94,9 @@ public class MapsActivity extends ActionBarActivity {
         findNearbyParking = (Button) findViewById(R.id.button);
         park = (Button) findViewById(R.id.park);
         history = (Button) findViewById(R.id.pastParking);
-
+        mp1 = MediaPlayer.create(MapsActivity.this, R.raw.snort);
+        mp2 = MediaPlayer.create(MapsActivity.this, R.raw.opensong);
+        mp2.start();
 
         findNearbyParking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +114,8 @@ public class MapsActivity extends ActionBarActivity {
                 Date date = new Date();
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyy HH:mm:ss");
                 String s = formatter.format(date);
-                MediaPlayer mp = MediaPlayer.create(MapsActivity.this, R.raw.snort);
-                mp.start();
+
+                mp1.start();
 
                 try {
                     db.addLocation(new Location(lat, lng, s));
@@ -166,27 +171,39 @@ public class MapsActivity extends ActionBarActivity {
     }
 
     /**
-     * createURL fashions a string based on the latitude and longitude of the user to submit to the SFPark API.
+     * Fashions a string based on the latitude and longitude of the user marker to submit to the SFPark API.
      * @return void
      */
     public void createURL() {
 
         url = "http://api.sfpark.org/sfpark/rest/availabilityservice?";
         url = url + "lat=" + lat +"&long=" + lng + "&" + url1 + getRadius() + url2;
-
+        //Sample url string sent to SFPark:
         //http://api.sfpark.org/sfpark/rest/availabilityservice?lat=37.792275&long=-122.397089&radius=0.25&uom=mile&response=json
         //http://api.sfpark.org/sfpark/rest/availabilityservice?radius=.05&response=json&pricing=yes&version=1.0
     }
 
     /**
-     * onResume is part of the Android activity flow. If the activity is paused, onResume recreates the map
-     * if needed.
+     * Recreates the map if the activity is paused. Part of the android life cycle.
+     *
      * @return void
      */
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    /**
+     * Stops playing MediaPlayer files if the window is paused by switching to another app.
+     *
+     * @return void
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp1.release();
+        mp2.release();
     }
 
     /**
@@ -220,8 +237,8 @@ public class MapsActivity extends ActionBarActivity {
     /**
      * Creates a new marker on the map when {@link #findNearbyParking} is clicked displaying a nearby
      * parking location.
-     * @param nearby
-     * @param name
+     * @param nearby A LatLng object comprised of the marker latitude and longitude. Get from SFPark
+     * @param name A String object that gives the name of the garage or street, from SFPark API.
      * @return void
      */
     public static void addNearbyMarker(LatLng nearby, String name){
@@ -235,7 +252,17 @@ public class MapsActivity extends ActionBarActivity {
 
     }
 
-
+    /**
+     * Creates 5 markers for the "Nearby Parking" button by parsing the JSON file from SFPark API.
+     * An array of Location objects is created from the passed response parameter and the array is iterated through storing the latitude,
+     * longitude, name, and description fields from the JSON file. In the case of metered parking, the
+     * DESC field is null, so the method handles that by inserting "Metered Parking". Finally, the 5
+     * nearest markers are dropped by iterating through the created array and calling Google Map's
+     * addMarker() method.
+     *
+     * @param response The string that is returned from the SFPark API call.
+     * @return void
+     */
     @TargetApi(14)
     public static void dropMarkers(String response){
         JSONObject rootObject;
@@ -252,8 +279,7 @@ public class MapsActivity extends ActionBarActivity {
                 // Create Location objects from parsed JSON info and add to avlParking
                 for (int i = 0; i < 5; i++) {
                     Location aLocation = new Location();
-                    String temp = avl.getJSONObject(i).getString("LOC");
-                    String[] coords = temp.split("\\,");
+                    String[] coords = avl.getJSONObject(i).getString("LOC").split("\\,");
 
                     aLocation.setLatitude(Double.parseDouble(coords[1]));
                     //System.out.println("lat: " + aLocation.getLatitude());
@@ -375,6 +401,13 @@ public class MapsActivity extends ActionBarActivity {
 
         );
     }
+
+    /**
+     * Inflates the menu items for use in the action bar.
+     *
+     * @param menu the menu object
+     * @return boolean on success
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -383,10 +416,24 @@ public class MapsActivity extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Gettter for the radius in the createURL() method. The radius is used to determine how far
+     * out from the user location nearby parking spots will be created.
+     *
+     * @return radius a double representing the radial distance from the user
+     */
     public double getRadius() {
         return radius;
     }
 
+    /**
+     * Setter for the radius variable in the createURL() method. The radius is used to determine how far
+     * out from the user location nearby parking spots will be created. Allows the user to determine that
+     * radial distance.
+     *
+     * @param radius radius a double representing the radial distance from the user
+     * @return void
+     */
     public void setRadius(double radius) {
         this.radius = radius;
     }
