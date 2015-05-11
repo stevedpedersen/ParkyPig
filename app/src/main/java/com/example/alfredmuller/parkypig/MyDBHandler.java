@@ -9,9 +9,17 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * MyDBHandler creates a SQLite database and contains the various helper methods for working with that
+ * datbase. The class contains the database fields necessary for the tables. The most current version is
+ * version 2 which added fields for name, address, and date. This class extends SQLiteOpenHelper which
+ * is part of the Android API.
+ */
 public class MyDBHandler extends SQLiteOpenHelper {
 
+    /**
+     * The most current version of the database.
+     */
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "PastParking";
     public static final String TABLE_NAME = "coordinates";

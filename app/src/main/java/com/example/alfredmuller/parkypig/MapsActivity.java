@@ -30,6 +30,8 @@ import java.util.List;
 
 import static com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 
+
+
 /**
  * <h1>MapsActivity is the main class which displays the Google Maps window for the ParkyPig App.</h1>
  * <p>The class contains various methods used to display the map, custom icons, event listeners, and buttons.
@@ -98,13 +100,14 @@ public class MapsActivity extends ActionBarActivity {
         mp2 = MediaPlayer.create(MapsActivity.this, R.raw.opensong);
         mp2.start();
 
+
         findNearbyParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createURL();
-                httpManager httpManager = new httpManager();
-                httpManager.execute(url);
-                httpManager.onPostExecute(url);
+                HttpManager HttpManager = new HttpManager();
+                HttpManager.execute(url);
+                HttpManager.onPostExecute(url);
             }
         });
 
@@ -236,11 +239,14 @@ public class MapsActivity extends ActionBarActivity {
 
     /**
      * Creates a new marker on the map when {@link #findNearbyParking} is clicked displaying a nearby
-     * parking location.
+     * parking location (deprecated, Leaving it in to show deprecation).
      * @param nearby A LatLng object comprised of the marker latitude and longitude. Get from SFPark
      * @param name A String object that gives the name of the garage or street, from SFPark API.
      * @return void
+     * @deprecated dropMarkers below takes care of what this, method used to do. Leaving it in to show
+     * deprecation.
      */
+    @Deprecated
     public static void addNearbyMarker(LatLng nearby, String name){
             //Create the marker with passed parameters.
             mMap.addMarker(new MarkerOptions()
@@ -269,6 +275,7 @@ public class MapsActivity extends ActionBarActivity {
 
         try {
             if(response !=null){
+                textView.setText("");
                 rootObject = new JSONObject(response);
                 JSONArray avl = new JSONArray(rootObject.getString("AVL"));
 
@@ -319,7 +326,7 @@ public class MapsActivity extends ActionBarActivity {
 
 
         } catch (JSONException e) {
-            textView.setText("hmm");
+            textView.setText("No Parking Locations Found Nearby");
             //e.printStackTrace();
         }
 
@@ -350,9 +357,9 @@ public class MapsActivity extends ActionBarActivity {
 
         mMap.getMyLocation();
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
+            public void onMapClick(LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Your location : ")
@@ -363,7 +370,7 @@ public class MapsActivity extends ActionBarActivity {
                 lng = latLng.longitude;
 
                 Toast.makeText(getApplicationContext(),
-                        "New porking location set!",
+                        "Marker set, click below...",
                         Toast.LENGTH_LONG).show();
             }
         });
