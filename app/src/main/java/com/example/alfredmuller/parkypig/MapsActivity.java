@@ -357,9 +357,9 @@ public class MapsActivity extends ActionBarActivity {
 
         mMap.getMyLocation();
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
+            public void onMapClick(LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Your location : ")
@@ -370,7 +370,7 @@ public class MapsActivity extends ActionBarActivity {
                 lng = latLng.longitude;
 
                 Toast.makeText(getApplicationContext(),
-                        "New porking location set!",
+                        "Marker set, click below...",
                         Toast.LENGTH_LONG).show();
             }
         });
