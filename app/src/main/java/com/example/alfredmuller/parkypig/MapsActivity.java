@@ -100,6 +100,7 @@ public class MapsActivity extends ActionBarActivity {
         mp2 = MediaPlayer.create(MapsActivity.this, R.raw.opensong);
         mp2.start();
 
+
         findNearbyParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,6 +275,7 @@ public class MapsActivity extends ActionBarActivity {
 
         try {
             if(response !=null){
+                textView.setText("");
                 rootObject = new JSONObject(response);
                 JSONArray avl = new JSONArray(rootObject.getString("AVL"));
 
@@ -324,7 +326,7 @@ public class MapsActivity extends ActionBarActivity {
 
 
         } catch (JSONException e) {
-            textView.setText("hmm");
+            textView.setText("No Parking Locations Found Nearby");
             //e.printStackTrace();
         }
 
