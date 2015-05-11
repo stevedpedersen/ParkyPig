@@ -31,6 +31,7 @@ import java.util.List;
 import static com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 
 
+
 /**
  * <h1>MapsActivity is the main class which displays the Google Maps window for the ParkyPig App.</h1>
  * <p>The class contains various methods used to display the map, custom icons, event listeners, and buttons.
