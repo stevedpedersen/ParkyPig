@@ -389,15 +389,14 @@ public class MapsActivity extends ActionBarActivity {
                                              mMap.clear();
                                              LatLng latLng = marker.getPosition();
                                              mMap.addMarker(new MarkerOptions().position(latLng)
-                                                     .title("Your location : ")
+                                                     .title("Current Porking Location")
                                                      .draggable(true)
-                                                     .snippet("lat : " + latLng.latitude + "\nlng : " + latLng.longitude)
                                                      .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
                                              lat = latLng.latitude;
                                              lng = latLng.longitude;
 
                                              Toast.makeText(getApplicationContext(),
-                                                     "Lat : " + latLng.latitude +" ",
+                                                     "Marker set, click below...",
                                                      Toast.LENGTH_LONG).show();
 
 
