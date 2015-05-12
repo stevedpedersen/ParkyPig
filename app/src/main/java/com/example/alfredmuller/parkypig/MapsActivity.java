@@ -346,7 +346,6 @@ public class MapsActivity extends ActionBarActivity {
         mMap.addMarker(new MarkerOptions()
                 .position(current)
                 .title("Current Porking Location")
-                .snippet("lat: " + current.latitude + "\nlong: " + current.longitude)
                 .draggable(true)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
 
