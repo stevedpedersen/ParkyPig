@@ -78,7 +78,7 @@ public class MapsActivity extends ActionBarActivity {
     /**
      * Launches the app, the first method called upon startup.
      * @param savedInstanceState the instance of the app
-     * @return void
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +175,7 @@ public class MapsActivity extends ActionBarActivity {
 
     /**
      * Fashions a string based on the latitude and longitude of the user marker to submit to the SFPark API.
-     * @return void
+     *
      */
     public void createURL() {
 
@@ -189,7 +189,7 @@ public class MapsActivity extends ActionBarActivity {
     /**
      * Recreates the map if the activity is paused. Part of the android life cycle.
      *
-     * @return void
+     *
      */
     @Override
     protected void onResume() {
@@ -200,7 +200,7 @@ public class MapsActivity extends ActionBarActivity {
     /**
      * Stops playing MediaPlayer files if the window is paused by switching to another app.
      *
-     * @return void
+     *
      */
     @Override
     protected void onPause() {
@@ -242,7 +242,7 @@ public class MapsActivity extends ActionBarActivity {
      * parking location (deprecated, Leaving it in to show deprecation).
      * @param nearby A LatLng object comprised of the marker latitude and longitude. Get from SFPark
      * @param name A String object that gives the name of the garage or street, from SFPark API.
-     * @return void
+     * @
      * @deprecated dropMarkers below takes care of what this, method used to do. Leaving it in to show
      * deprecation.
      */
@@ -267,7 +267,7 @@ public class MapsActivity extends ActionBarActivity {
      * addMarker() method.
      *
      * @param response The string that is returned from the SFPark API call.
-     * @return void
+     *
      */
     @TargetApi(14)
     public static void dropMarkers(String response){
@@ -346,9 +346,8 @@ public class MapsActivity extends ActionBarActivity {
         mMap.addMarker(new MarkerOptions()
                 .position(current)
                 .title("Current Porking Location")
-                .snippet("lat: " +current.latitude + "\nlong: " + current.longitude)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pig)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
 
         mMap.setMyLocationEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
@@ -362,10 +361,9 @@ public class MapsActivity extends ActionBarActivity {
             public void onMapClick(LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng)
-                        .title("Your location : ")
-                        .snippet("lat : " + latLng.latitude + "\nlng : " + latLng.longitude)
+                        .title("Current Porking Location")
                         .draggable(true)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pig)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
                 lat = latLng.latitude;
                 lng = latLng.longitude;
 
@@ -391,15 +389,14 @@ public class MapsActivity extends ActionBarActivity {
                                              mMap.clear();
                                              LatLng latLng = marker.getPosition();
                                              mMap.addMarker(new MarkerOptions().position(latLng)
-                                                     .title("Your location : ")
+                                                     .title("Current Porking Location")
                                                      .draggable(true)
-                                                     .snippet("lat : " + latLng.latitude + "\nlng : " + latLng.longitude)
-                                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pig)));
+                                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
                                              lat = latLng.latitude;
                                              lng = latLng.longitude;
 
                                              Toast.makeText(getApplicationContext(),
-                                                     "Lat : " + latLng.latitude +" ",
+                                                     "Marker set, click below...",
                                                      Toast.LENGTH_LONG).show();
 
 
@@ -439,7 +436,7 @@ public class MapsActivity extends ActionBarActivity {
      * radial distance.
      *
      * @param radius radius a double representing the radial distance from the user
-     * @return void
+     *
      */
     public void setRadius(double radius) {
         this.radius = radius;
