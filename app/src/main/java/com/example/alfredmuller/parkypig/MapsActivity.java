@@ -362,7 +362,6 @@ public class MapsActivity extends ActionBarActivity {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Your location : ")
-                        .snippet("lat : " + latLng.latitude + "\nlng : " + latLng.longitude)
                         .draggable(true)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
                 lat = latLng.latitude;
