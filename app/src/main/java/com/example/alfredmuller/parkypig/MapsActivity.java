@@ -361,7 +361,7 @@ public class MapsActivity extends ActionBarActivity {
             public void onMapClick(LatLng latLng) {
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng)
-                        .title("Your location : ")
+                        .title("Current Porking Location")
                         .draggable(true)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pigicon)));
                 lat = latLng.latitude;
